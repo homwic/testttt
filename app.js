@@ -434,5 +434,5 @@ app.get("/api/proxy", apiKeyAuth, async (req, res) => {
 });
 
 app.listen(6000, () => {
-  console.log("Server ready: http://localhost:3000");
+  console.log("Server ready: http://localhost:6000");
 });
