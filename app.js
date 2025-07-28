@@ -247,7 +247,7 @@ app.post("/api/pay", userAuth, async (req, res) => {
       { sku: "API001", name: "API Access", price: amount, quantity: 1 },
     ],
     callback_url: process.env.TRIPAY_CALLBACK_URL,
-    return_url: `https://viu.lutify.biz.id/thankyou.html?ref=${merchantRef}`,
+    return_url: `https://f0685472b513.ngrok-free.app/thankyou.html?ref=${merchantRef}`,
     signature,
   };
 
@@ -433,6 +433,6 @@ app.get("/api/proxy", apiKeyAuth, async (req, res) => {
   }
 });
 
-app.listen(6000, () => {
-  console.log("Server ready: http://localhost:6000");
+app.listen(3000, () => {
+  console.log("Server ready: http://localhost:3000");
 });
