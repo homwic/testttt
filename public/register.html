@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Daftar Akun & Verifikasi OTP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <style>
+      body {
+        background: #f6f7fb;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .reg-box {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow:
+          0 4px 32px 0 #0011350f,
+          0 1.5px 7px #0011351a;
+        margin: 0 auto 16px auto;
+        padding: 0;
+        overflow: hidden;
+      }
+      .reg-header {
+        background: #028aff;
+        color: #fff;
+        font-size: 1.7rem;
+        font-weight: 600;
+        text-align: center;
+        padding: 25px 0 14px;
+        border-bottom: 1px solid #e9ecef;
+      }
+      .reg-header .bi {
+        font-size: 2.2rem;
+        vertical-align: middle;
+        margin-bottom: 4px;
+      }
+      .reg-body {
+        padding: 32px 32px 18px;
+      }
+      .reg-footer {
+        background: #fafcff;
+        padding: 17px 32px 18px;
+        border-top: 1px solid #f1f2f4;
+        font-size: 1rem;
+        text-align: center;
+      }
+      .btn-primary {
+        background: #028aff;
+        border: none;
+      }
+      .btn-primary:hover,
+      .btn-primary:focus {
+        background: #0367c6;
+      }
+      .alert {
+        font-size: 0.97rem;
+      }
+      .otp-card {
+        border-radius: 16px;
+        box-shadow: 0 1px 8px #028aff17;
+      }
+      @media (max-width: 600px) {
+        .reg-body,
+        .reg-footer {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+        .reg-header {
+          font-size: 1.1rem;
+          padding: 18px 0 8px;
+        }
+        .reg-box,
+        .otp-card {
+          border-radius: 11px;
+        }
+      }
+      @media (max-width: 400px) {
+        .reg-body,
+        .reg-footer {
+          padding-left: 7px;
+          padding-right: 7px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <!-- Register Card -->
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+          <div class="reg-box shadow" id="registerCard">
+            <div class="reg-header">
+              <i class="bi bi-person-plus"></i> Daftar Akun
+            </div>
+            <div class="reg-body">
+              <form id="regForm" autocomplete="off">
+                <div class="mb-3">
+                  <label class="form-label">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    required
+                    placeholder="Masukkan username"
+                    autocomplete="username"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    required
+                    placeholder="Masukkan email"
+                    autocomplete="email"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    required
+                    placeholder="Masukkan password"
+                    autocomplete="new-password"
+                  />
+                </div>
+                <button class="btn btn-primary w-100 mb-1" type="submit">
+                  <i class="bi bi-send"></i> Daftar
+                </button>
+              </form>
+              <div class="alert mt-3 d-none" id="alertMsg"></div>
+            </div>
+            <div class="reg-footer">
+              Sudah punya akun? <a href="index.html">Login di sini</a>
+            </div>
+          </div>
+          <!-- OTP Card -->
+          <div class="reg-box otp-card shadow d-none" id="otpCard">
+            <div class="reg-header" style="background: #07b478">
+              <i class="bi bi-shield-lock"></i> Verifikasi OTP
+            </div>
+            <div class="reg-body">
+              <form id="otpForm" autocomplete="off">
+                <input type="hidden" id="otpEmail" />
+                <div class="mb-3">
+                  <label class="form-label">Kode OTP</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="otpInput"
+                    maxlength="6"
+                    required
+                    placeholder="6 digit OTP"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                  />
+                </div>
+                <button class="btn btn-success w-100" type="submit">
+                  <i class="bi bi-key"></i> Verifikasi
+                </button>
+              </form>
+              <div class="alert mt-3 d-none" id="otpAlert"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Register
+      document.getElementById("regForm").onsubmit = async function (e) {
+        e.preventDefault();
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const alertBox = document.getElementById("alertMsg");
+
+        const resp = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password }),
+        });
+        const data = await resp.json();
+        if (data.status === "ok") {
+          alertBox.classList.remove("d-none", "alert-danger");
+          alertBox.classList.add("alert-success");
+          alertBox.innerText = "Berhasil daftar. Cek email untuk kode OTP!";
+          document.getElementById("registerCard").classList.add("d-none");
+          document.getElementById("otpCard").classList.remove("d-none");
+          document.getElementById("otpEmail").value = email;
+        } else {
+          alertBox.classList.remove("d-none", "alert-success");
+          alertBox.classList.add("alert-danger");
+          alertBox.innerText = data.message;
+        }
+      };
+
+      // OTP Verification
+      document.getElementById("otpForm").onsubmit = async function (e) {
+        e.preventDefault();
+        const email = document.getElementById("otpEmail").value;
+        const otp = document.getElementById("otpInput").value;
+        const otpAlert = document.getElementById("otpAlert");
+
+        const resp = await fetch("/api/verify-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, otp }),
+        });
+        const data = await resp.json();
+        if (data.status === "ok") {
+          otpAlert.classList.remove("d-none", "alert-danger");
+          otpAlert.classList.add("alert-success");
+          otpAlert.innerText = data.message + " Silakan login.";
+          setTimeout(() => (window.location = "index.html"), 1500);
+        } else {
+          otpAlert.classList.remove("d-none", "alert-success");
+          otpAlert.classList.add("alert-danger");
+          otpAlert.innerText = data.message;
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Profile | API Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <style>
+      body {
+        background: #f8f9fa;
+      }
+      .navbar-custom {
+        background-color: #007bff;
+        color: white;
+      }
+      .navbar-custom .navbar-brand {
+        color: white;
+      }
+      .navbar-custom .btn-danger {
+        background-color: #e3342f;
+        color: white;
+      }
+      .card {
+        border-radius: 1rem;
+      }
+      .apikey-box {
+        font-family: monospace;
+        background: #e9ecef;
+        padding: 7px 15px;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+      }
+      .icon-cell {
+        width: 32px;
+        text-align: center;
+        color: #007bff;
+        font-size: 1.3rem;
+        vertical-align: middle;
+      }
+      .icon-key {
+        color: #6366f1;
+        margin-right: 6px;
+      }
+      .icon-expired {
+        color: #e3342f;
+        margin-right: 6px;
+      }
+      @media (max-width: 540px) {
+        .container {
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+        .card {
+          padding: 0.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-custom mb-4">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#"
+          ><i class="bi bi-code-slash"></i> API Demo</a
+        >
+        <div class="ms-auto">
+          <a href="dashboard.html" class="btn btn-info me-2"
+            ><i class="bi bi-grid"></i> Dashboard</a
+          >
+          <button class="btn btn-danger" onclick="logout()">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+          <div class="card mb-4 shadow">
+            <div class="card-body">
+              <h3 class="mb-4">
+                <i class="bi bi-person-circle text-primary"></i> Informasi Akun
+              </h3>
+              <table class="table table-striped align-middle">
+                <tbody id="userTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      if (!localStorage.getItem("token")) location = "index.html";
+      let user;
+
+      async function loadUser() {
+        const resp = await fetch("/api/me", {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        });
+        const data = await resp.json();
+        if (data.status !== "ok") return logout();
+        user = data.user;
+        let html = `
+          <tr>
+            <td class="icon-cell"><i class="bi bi-person-badge"></i></td>
+            <th>Username</th>
+            <td>${user.username}</td>
+          </tr>
+          <tr>
+            <td class="icon-cell"><i class="bi bi-envelope-at"></i></td>
+            <th>Email</th>
+            <td>${user.email}</td>
+          </tr>
+          <tr>
+            <td class="icon-cell"><i class="bi bi-shield-check"></i></td>
+            <th>Status API Key</th>
+            <td>
+              ${
+                user.apiKeyStatus === "active"
+                  ? '<span class="badge bg-success"><i class="bi bi-check-circle"></i> Aktif</span>'
+                  : '<span class="badge bg-secondary"><i class="bi bi-x-circle"></i> Tidak Aktif</span>'
+              }
+            </td>
+          </tr>
+          <tr>
+            <td class="icon-cell"><i class="bi bi-key icon-key"></i></td>
+            <th>API Key</th>
+            <td>
+              <span class="apikey-box">${user.apiKey || "-"}</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="icon-cell"><i class="bi bi-calendar-x icon-expired"></i></td>
+            <th>Expired</th>
+            <td>
+              ${
+                user.apiKeyExpired
+                  ? new Date(user.apiKeyExpired).toLocaleString()
+                  : "-"
+              }
+            </td>
+          </tr>
+        `;
+        document.getElementById("userTable").innerHTML = html;
+      }
+
+      function logout() {
+        localStorage.removeItem("token");
+        window.location = "index.html";
+      }
+
+      loadUser();
+    </script>
+  </body>
+</html>

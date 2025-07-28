@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pembayaran | Bukti Invoice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <style>
+      body {
+        background: #f3f6fa;
+      }
+      .card {
+        border: none;
+        border-radius: 1.5rem;
+      }
+      .icon-check,
+      .icon-fail,
+      .icon-warn {
+        font-size: 3rem;
+        margin-bottom: 12px;
+        animation: bounce-in 0.5s;
+        display: inline-block;
+      }
+      .icon-check {
+        color: #1cc88a;
+      }
+      .icon-fail {
+        color: #e3342f;
+      }
+      .icon-warn {
+        color: #f0ad4e;
+      }
+      @keyframes bounce-in {
+        0% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        70% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .invoice-table th {
+        background: #f7f9fc;
+        width: 160px;
+      }
+      .table td,
+      .table th {
+        vertical-align: middle !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9">
+          <div class="card shadow-lg">
+            <div class="card-body text-center">
+              <div id="iconStatus" class="mb-2"></div>
+              <h2 class="mb-2" id="mainTitle">Pembayaran</h2>
+              <p class="text-muted mb-4" id="subtitle">
+                Menunggu status pembayaran...
+              </p>
+              <div id="invoiceBox"></div>
+              <a href="dashboard.html" class="btn btn-outline-primary mt-4">
+                <i class="bi bi-arrow-left"></i> Kembali ke Dashboard
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get("ref");
+      const iconStatus = document.getElementById("iconStatus");
+      const mainTitle = document.getElementById("mainTitle");
+      const subtitle = document.getElementById("subtitle");
+
+      function showStatusIcon(type, text) {
+        if (type === "success") {
+          iconStatus.innerHTML =
+            '<span class="icon-check"><i class="bi bi-patch-check-fill"></i></span>';
+          mainTitle.textContent = "Pembayaran Berhasil";
+          subtitle.textContent =
+            "Terima kasih! Pembayaran Anda sudah kami terima.";
+        } else if (type === "failed") {
+          iconStatus.innerHTML =
+            '<span class="icon-fail"><i class="bi bi-x-octagon-fill"></i></span>';
+          mainTitle.textContent = "Pembayaran Gagal";
+          subtitle.textContent = "Maaf, pembayaran Anda gagal atau dibatalkan.";
+        } else if (type === "expired") {
+          iconStatus.innerHTML =
+            '<span class="icon-fail"><i class="bi bi-x-octagon-fill"></i></span>';
+          mainTitle.textContent = "Pembayaran Expired";
+          subtitle.textContent =
+            "Maaf, invoice telah expired / tidak dibayar tepat waktu.";
+        } else {
+          iconStatus.innerHTML =
+            '<span class="icon-warn"><i class="bi bi-clock-history"></i></span>';
+          mainTitle.textContent = "Menunggu Pembayaran";
+          subtitle.textContent =
+            "Silakan selesaikan pembayaran untuk mengaktifkan layanan.";
+        }
+      }
+
+      if (!ref) {
+        showStatusIcon("failed");
+        document.getElementById("invoiceBox").innerHTML =
+          '<div class="alert alert-danger mt-3">Tidak ada reference pembayaran.</div>';
+      } else {
+        // Loading
+        document.getElementById("invoiceBox").innerHTML =
+          '<div class="text-center my-4"><div class="spinner-border text-primary" role="status"></div><div>Memuat detail invoice...</div></div>';
+        // Fetch invoice detail
+        fetch("/api/invoice/detail/" + ref, {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.status !== "ok") {
+              showStatusIcon("failed");
+              document.getElementById("invoiceBox").innerHTML =
+                '<div class="alert alert-danger mt-3">' +
+                data.message +
+                "</div>";
+              subtitle.textContent =
+                "Terjadi masalah, pembayaran Anda belum terdeteksi di sistem kami.";
+            } else {
+              const inv = data.data;
+              // Status-based icon and text
+              if (inv.status === "PAID" || inv.status === "SETTLED") {
+                showStatusIcon("success");
+              } else if (
+                inv.status === "FAILED" ||
+                inv.status === "REFUND" ||
+                inv.status === "FAILED_REFUND"
+              ) {
+                showStatusIcon("failed");
+              } else if (inv.status === "EXPIRED") {
+                showStatusIcon("expired");
+              } else {
+                showStatusIcon("pending");
+              }
+              let paidText =
+                inv.status === "PAID" || inv.status === "SETTLED"
+                  ? '<span class="badge rounded-pill text-bg-success px-3 py-2"><i class="bi bi-check-circle"></i> Lunas</span>'
+                  : inv.status === "EXPIRED"
+                  ? '<span class="badge rounded-pill text-bg-danger px-3 py-2"><i class="bi bi-x-octagon"></i> Expired</span>'
+                  : inv.status === "FAILED" ||
+                    inv.status === "REFUND" ||
+                    inv.status === "FAILED_REFUND"
+                  ? '<span class="badge rounded-pill text-bg-danger px-3 py-2"><i class="bi bi-x-circle"></i> Gagal</span>'
+                  : '<span class="badge rounded-pill text-bg-warning px-3 py-2"><i class="bi bi-clock-history"></i> ' +
+                    inv.status +
+                    "</span>";
+              document.getElementById("invoiceBox").innerHTML = `
+              <div class="mb-3">
+                <h5>Invoice <span class="text-primary">${
+                  inv.reference
+                }</span></h5>
+                ${paidText}
+              </div>
+              <div class="table-responsive">
+              <table class="table table-bordered align-middle invoice-table">
+                <tr><th>Status</th><td>${inv.status}</td></tr>
+                <tr><th>Nama</th><td>${inv.customer_name}</td></tr>
+                <tr><th>Email</th><td>${inv.customer_email}</td></tr>
+                <tr><th>Metode</th><td>${inv.payment_method} <small>(${
+                inv.payment_name
+              })</small></td></tr>
+                <tr><th>Nominal</th><td><span class="fw-bold">Rp ${inv.amount.toLocaleString()}</span></td></tr>
+                <tr><th>Waktu Bayar</th><td>${
+                  inv.paid_at
+                    ? new Date(inv.paid_at * 1000).toLocaleString("id-ID")
+                    : "-"
+                }</td></tr>
+                <tr><th>Invoice Tripay</th><td>
+                  <a href="https://tripay.co.id/checkout/${
+                    inv.reference
+                  }" class="btn btn-sm btn-outline-success" target="_blank">
+                    <i class="bi bi-receipt"></i> Lihat Invoice Tripay
+                  </a>
+                </td></tr>
+              </table>
+              </div>
+              <div class="text-center mt-3">
+                <a href="https://tripay.co.id/checkout/${
+                  inv.reference
+                }" target="_blank" class="btn btn-success">
+                  <i class="bi bi-printer"></i> Cetak / Simpan Invoice
+                </a>
+              </div>
+            `;
+            }
+          });
+      }
+    </script>
+  </body>
+</html>
