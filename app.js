@@ -227,7 +227,7 @@ app.post("/api/pay", userAuth, async (req, res) => {
   const merchantCode = process.env.TRIPAY_MERCHANT_CODE;
   const privateKey = process.env.TRIPAY_PRIVATE_KEY;
   const merchantRef = "ORDER" + Date.now() + user._id;
-  const amount = 10000;
+  const amount = 30000;
 
   const signatureBase = merchantCode + merchantRef + amount;
   const signature = crypto
@@ -247,7 +247,7 @@ app.post("/api/pay", userAuth, async (req, res) => {
       { sku: "API001", name: "API Access", price: amount, quantity: 1 },
     ],
     callback_url: process.env.TRIPAY_CALLBACK_URL,
-    return_url: `https://f0685472b513.ngrok-free.app/thankyou.html?ref=${merchantRef}`,
+    return_url: `https://viu.lutify.biz.id/thankyou.html?ref=${merchantRef}`,
     signature,
   };
 

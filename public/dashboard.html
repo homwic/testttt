@@ -2,7 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Dashboard | API Demo</title>
+    <title>Dashboard | VIU Generator API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
@@ -13,103 +13,273 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
     />
     <style>
+      html,
       body {
-        background: #f8f9fa;
+        height: 100%;
+        min-height: 100%;
+        background: linear-gradient(120deg, #f9fcff 0%, #e3f2fd 100%);
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        color: #18364b;
       }
       .navbar-custom {
-        background-color: #007bff;
+        background: linear-gradient(90deg, #028aff 80%, #03e3fd 100%);
         color: white;
+        box-shadow: 0 2px 16px #007bff09;
       }
       .navbar-custom .navbar-brand {
         color: white;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        font-size: 1.13rem;
+      }
+      .navbar-custom .btn-info {
+        background: #fff;
+        color: #028aff;
+        font-weight: 600;
+        border: none;
+      }
+      .navbar-custom .btn-info:hover {
+        background: #e9f5ff;
+        color: #1877f2;
       }
       .navbar-custom .btn-danger {
         background-color: #e3342f;
         color: white;
+        border: none;
+      }
+      .navbar-custom .btn-danger:hover {
+        background: #bb2223;
       }
       .card {
-        border-radius: 1rem;
+        border-radius: 1.1rem;
+        box-shadow: 0 4px 28px #0095ff13;
+        border: none;
       }
       .apikey-box {
         font-family: monospace;
-        background: #e9ecef;
-        padding: 7px 15px;
-        border-radius: 7px;
+        background: #eaf5fd;
+        padding: 7px 15px 7px 16px;
+        border-radius: 8px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 7px;
+        gap: 10px;
+        font-size: 1rem;
       }
       .apikey-value {
         word-break: break-all;
-        font-size: 1rem;
       }
       .copy-btn {
         border: none;
         background: none;
-        color: #007bff;
-        padding: 0 3px;
-        font-size: 1.17rem;
+        color: #028aff;
+        padding: 2px 6px;
+        font-size: 1.19rem;
         cursor: pointer;
         transition: color 0.18s;
         outline: none;
-        margin-left: 8px;
-        margin-right: -5px;
         display: flex;
         align-items: center;
+        margin-left: 5px;
       }
       .copy-btn:active,
       .copy-btn:focus {
-        color: #004080;
+        color: #0147a6;
       }
       .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5);
+        border-color: #028aff;
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.11);
       }
       .whitelist-box {
-        padding: 1.25rem;
-        background: #f8f9fa;
+        padding: 1.2rem;
+        background: #f6fbfe;
         border-radius: 1rem;
+        min-height: 230px;
       }
-      .btn-custom {
-        background-color: #007bff;
-        color: white;
-        width: 100%;
+      .section-title {
+        font-weight: 700;
+        margin-bottom: 13px;
+        color: #1178e4;
+        letter-spacing: 0.5px;
       }
-      .btn-custom:hover {
-        background-color: #0056b3;
+      .doc-row-main {
+        display: flex;
+        gap: 26px;
+        justify-content: center;
+        margin-top: 32px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
       }
-      .list-group-item {
+      .doc-block {
+        background: #fff;
+        border-radius: 1.1rem;
+        box-shadow: 0 1px 16px #8bcbfa25;
+        padding: 28px 18px 18px 18px;
+        min-width: 220px;
+        flex: 1 1 330px;
+        margin: 0 5px;
+        min-height: 340px;
+        max-width: 520px;
+      }
+      .code-example-box {
+        background: #19222e;
+        color: #eaf6ff;
+        border-radius: 1.1rem;
+        box-shadow: 0 1px 16px #2b9be933;
+        padding: 15px 10px 14px 13px;
+        font-size: 0.99rem;
+        position: relative;
+        min-width: 120px;
+        flex: 1 1 330px;
+        margin: 0 5px;
+        overflow: auto;
+        min-height: 340px;
+        max-width: 520px;
+        display: flex;
+        flex-direction: column;
+      }
+      .code-label {
+        font-weight: 600;
+        font-size: 1.08rem;
+        color: #03e3fd;
+        margin-bottom: 7px;
+      }
+      .btn-copy-code {
+        position: absolute;
+        top: 13px;
+        right: 13px;
+        background: #03e3fd;
+        color: #045c84;
+        border: none;
+        font-size: 1.11rem;
+        border-radius: 8px;
+        padding: 3px 11px;
+        cursor: pointer;
+        z-index: 2;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .btn-copy-code:active,
+      .btn-copy-code:focus {
+        background: #03b6cd;
+        color: #fff;
+      }
+      .tab-content pre {
+        color: #eaf6ff;
+        background: none;
+        border: none;
+        margin-bottom: 0;
+        white-space: pre-wrap;
+        word-break: break-all;
+        font-size: 0.94rem;
+      }
+      .nav-tabs .nav-link.active {
+        background: #152c41;
+        color: #fff !important;
         border: none;
       }
-      .pay-bank-img {
-        height: 36px;
-        width: auto;
-        margin-right: 10px;
-        border-radius: 6px;
-        box-shadow: 0 1px 5px #0002;
-        background: #fff;
+      .nav-tabs .nav-link {
+        color: #c4e2fc;
+        border: none;
+        font-size: 1rem;
       }
-      .pay-icon-fallback {
-        font-size: 2.1rem;
-        color: #555;
-        margin-right: 10px;
+      .footer {
+        margin-top: 42px;
+        background: #fff;
+        border-top: 1.5px solid #e2edff;
+        padding: 28px 0 18px 0;
+        text-align: center;
+        font-size: 1.04rem;
+        color: #516a92;
+      }
+      .footer a {
+        color: #008aff;
+        text-decoration: none;
+      }
+      .contact-link i {
+        font-size: 1.19rem;
+        vertical-align: middle;
+        margin-right: 7px;
+      }
+      #wa-float-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 9999;
+        background: #25d366;
+        color: #fff;
+        border-radius: 50%;
+        width: 53px;
+        height: 53px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.07rem;
+        box-shadow: 0 4px 22px #0a583b2c;
+        transition:
+          background 0.2s,
+          transform 0.12s;
+        text-decoration: none;
+      }
+      #wa-float-btn:hover {
+        background: #21c05b;
+        color: #fff;
+        transform: scale(1.09);
+        text-decoration: none;
+      }
+      @media (max-width: 1080px) {
+        .doc-row-main {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 18px;
+        }
+        .doc-block,
+        .code-example-box {
+          max-width: 100%;
+          min-width: 0;
+        }
+      }
+      @media (max-width: 800px) {
+        .container {
+          padding-left: 2vw;
+          padding-right: 2vw;
+        }
       }
       @media (max-width: 700px) {
         .whitelist-box,
         .card {
           padding: 0.7rem;
         }
-      }
-      @media (max-width: 430px) {
-        .pay-bank-img {
-          height: 28px !important;
-        }
-        .pay-icon-fallback {
-          font-size: 1.4rem !important;
-        }
-        .apikey-value {
+        .footer {
           font-size: 0.96rem;
+        }
+      }
+      @media (max-width: 530px) {
+        .apikey-box {
+          font-size: 0.87rem;
+          padding: 6px 7px 6px 10px;
+        }
+        .doc-block,
+        .code-example-box {
+          padding: 11px 2px;
+        }
+        #wa-float-btn {
+          width: 42px;
+          height: 42px;
+          font-size: 1.35rem;
+          right: 10px;
+          bottom: 12px;
+        }
+        .footer {
+          font-size: 0.89rem;
+        }
+      }
+      @media (max-width: 410px) {
+        .section-title,
+        .doc-block h5,
+        .code-label {
+          font-size: 1rem;
         }
       }
     </style>
@@ -118,12 +288,12 @@
     <nav class="navbar navbar-expand-lg navbar-custom mb-4">
       <div class="container">
         <a class="navbar-brand fw-bold" href="#">
-          <i class="bi bi-code-slash"></i> API Demo
+          <i class="bi bi-lightning-charge"></i> VIU Generator API
         </a>
         <div class="ms-auto">
-          <a href="profile.html" class="btn btn-info me-2"
-            ><i class="bi bi-person-circle"></i> Profile</a
-          >
+          <a href="profile.html" class="btn btn-info me-2">
+            <i class="bi bi-person-circle"></i> Profile
+          </a>
           <button class="btn btn-danger" onclick="logout()">
             <i class="bi bi-box-arrow-right"></i> Logout
           </button>
@@ -133,36 +303,44 @@
 
     <div class="container">
       <div class="row">
-        <!-- Whitelist (IP/Domain) -->
-        <div class="col-md-4">
-          <div class="card mb-4 whitelist-box">
+        <!-- Whitelist IP Only -->
+        <div class="col-lg-4 col-md-5 col-12 mb-3">
+          <div class="card whitelist-box h-100">
             <div class="card-body">
-              <h5>
-                <i class="bi bi-shield-check text-success"></i> Whitelist
-                (IP/Domain)
+              <h5 class="section-title">
+                <i class="bi bi-shield-check text-success"></i> Whitelist IP
+                Anda
               </h5>
-              <ul id="whitelistList" class="list-group mb-3"></ul>
-              <form id="wlForm" class="d-flex">
+              <form id="wlForm" class="d-flex flex-column gap-2">
                 <input
                   type="text"
-                  class="form-control me-2"
-                  placeholder="IP/domain..."
+                  class="form-control"
+                  placeholder="Masukkan IP Publik Anda"
                   id="wlItem"
                   required
+                  pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
+                  title="IP Publik Valid Contoh: 123.123.123.123"
+                  autocomplete="off"
+                  inputmode="numeric"
+                  maxlength="15"
                 />
-                <button class="btn btn-success" type="submit">
-                  <i class="bi bi-plus-circle"></i> Add
+                <button
+                  class="btn btn-success w-100"
+                  type="submit"
+                  id="saveIpBtn"
+                >
+                  <i class="bi bi-shield-check"></i> Simpan IP
                 </button>
               </form>
+              <div id="whitelistInfo" class="mt-2 small text-success"></div>
             </div>
           </div>
         </div>
-
         <!-- API Key and Expiry Date -->
-        <div class="col-md-8">
-          <div class="card mb-4">
+        <div class="col-lg-8 col-md-7 col-12 mb-3">
+          <div class="card h-100">
             <div class="card-body">
-              <h3 class="mb-3">
+              <h3 class="mb-3 section-title">
                 <i class="bi bi-key"></i> API Key Information
               </h3>
               <table class="table table-striped">
@@ -174,44 +352,189 @@
         </div>
       </div>
 
-      <hr />
-
-      <h4 class="mt-4 mb-2"><i class="bi bi-terminal"></i> Test API Proxy</h4>
-      <button class="btn btn-info mb-2" onclick="testApi()">
-        <i class="bi bi-lightning-charge"></i> Coba Proxy (pakai API key &
-        whitelist!)
-      </button>
-      <pre id="apiTestResult" class="mt-3"></pre>
-    </div>
-
-    <!-- Toast Notifications -->
-    <div
-      class="toast-container position-fixed bottom-0 end-0 p-3"
-      id="toastContainer"
-      aria-live="assertive"
-      aria-atomic="true"
-    >
-      <div
-        id="toast"
-        class="toast"
-        role="alert"
-        aria-live="assertive"
-        aria-atomic="true"
-      >
-        <div class="toast-header">
-          <strong class="me-auto" id="toastTitle">Notification</strong>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="toast"
-            aria-label="Close"
-          ></button>
+      <!-- Dokumentasi + Contoh Code -->
+      <div class="doc-row-main">
+        <!-- Dokumentasi -->
+        <div class="doc-block">
+          <h5 class="mb-3">
+            <i class="bi bi-book"></i> Dokumentasi API Singkat
+          </h5>
+          <p>
+            <b>Endpoint utama:</b><br />
+            <code
+              >GET
+              /api/proxy?apikey=APIKEY&username=USERNAME&domain=DOMAIN&password=PASSWORD&paket=PAKET</code
+            >
+          </p>
+          <ul class="mb-3">
+            <li><b>apikey</b> : API key Anda (dari dashboard)</li>
+            <li><b>username</b> : Username akun VIU yang ingin dibuat</li>
+            <li><b>domain</b> : Domain email (cth: gmail.com)</li>
+            <li><b>password</b> : Password untuk akun VIU</li>
+            <li><b>paket</b> : Pilihan paket <b>1</b> atau <b>200</b></li>
+          </ul>
+          <!-- <div class="alert alert-info p-2 mb-2" style="font-size: 0.98rem">
+            <i class="bi bi-info-circle"></i> <b>Catatan:</b>
+            <ul class="mb-1 mt-1" style="padding-left: 18px">
+              <li>Whitelist 1 IP publik sebelum akses API.</li>
+              <li>1 akun hanya boleh whitelist 1 IP, bisa diganti.</li>
+              <li>Gunakan HTTPS untuk keamanan.</li>
+            </ul>
+          </div> -->
         </div>
-        <div class="toast-body" id="toastMessage">Your message goes here.</div>
+        <!-- Contoh Code Lengkap (Tab) -->
+        <div class="code-example-box">
+          <div class="code-label mb-2">
+            <i class="bi bi-code-slash"></i> Contoh Code Lengkap
+          </div>
+          <ul class="nav nav-tabs mb-2" id="codeTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="node-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nodejs-code"
+                type="button"
+                role="tab"
+              >
+                Node.js
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="php-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#php-code"
+                type="button"
+                role="tab"
+              >
+                PHP
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="python-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#python-code"
+                type="button"
+                role="tab"
+              >
+                Python
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="curl-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#curl-code"
+                type="button"
+                role="tab"
+              >
+                CURL
+              </button>
+            </li>
+          </ul>
+          <div class="tab-content" id="codeTabContent" style="flex: 1">
+            <!-- Node.js -->
+            <div
+              class="tab-pane fade show active"
+              id="nodejs-code"
+              role="tabpanel"
+            >
+              <button
+                class="btn-copy-code"
+                onclick="copyCode('codeNode', this)"
+                title="Salin kode"
+              >
+                <i class="bi bi-clipboard"></i>
+              </button>
+              <pre id="codeNode"><code>
+// Install axios: npm install axios
+const axios = require('axios');
+const APIKEY = 'ISI_APIKEY_ANDA';
+const USERNAME = 'ISI_USERNAME';
+const DOMAIN = 'gmail.com';
+const PASSWORD = 'ISI_PASSWORD';
+const PAKET = '1'; // atau '200'
+const url = `https://viu.lutify.biz.id/api/proxy?apikey=${APIKEY}&username=${USERNAME}&domain=${DOMAIN}&password=${PASSWORD}&paket=${PAKET}`;
+axios.get(url, { headers: { 'Content-Type': 'application/json' } })
+  .then(response => { console.log(response.data); })
+  .catch(error => { console.error(error.response ? error.response.data : error.message); });
+            </code></pre>
+            </div>
+            <!-- PHP -->
+            <div class="tab-pane fade" id="php-code" role="tabpanel">
+              <button
+                class="btn-copy-code"
+                onclick="copyCode('codePHP', this)"
+                title="Salin kode"
+              >
+                <i class="bi bi-clipboard"></i>
+              </button>
+              <pre id="codePHP"><code>
+&lt;?php
+$apikey = "ISI_APIKEY_ANDA";
+$username = "ISI_USERNAME";
+$domain = "gmail.com";
+$password = "ISI_PASSWORD";
+$paket = "1"; // atau '200'
+$url = "https://viu.lutify.biz.id/api/proxy?apikey=$apikey&amp;username=$username&amp;domain=$domain&amp;password=$password&amp;paket=$paket";
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+$response = curl_exec($ch);
+if (curl_errno($ch)) {
+    echo "Error: " . curl_error($ch);
+} else {
+    echo $response;
+}
+curl_close($ch);
+?>
+            </code></pre>
+            </div>
+            <!-- Python -->
+            <div class="tab-pane fade" id="python-code" role="tabpanel">
+              <button
+                class="btn-copy-code"
+                onclick="copyCode('codePython', this)"
+                title="Salin kode"
+              >
+                <i class="bi bi-clipboard"></i>
+              </button>
+              <pre id="codePython"><code>
+import requests
+APIKEY = 'ISI_APIKEY_ANDA'
+USERNAME = 'ISI_USERNAME'
+DOMAIN = 'gmail.com'
+PASSWORD = 'ISI_PASSWORD'
+PAKET = '1' # atau '200'
+url = f"https://viu.lutify.biz.id/api/proxy?apikey={APIKEY}&username={USERNAME}&domain={DOMAIN}&password={PASSWORD}&paket={PAKET}"
+response = requests.get(url)
+print(response.text)
+            </code></pre>
+            </div>
+            <!-- CURL -->
+            <div class="tab-pane fade" id="curl-code" role="tabpanel">
+              <button
+                class="btn-copy-code"
+                onclick="copyCode('codeCurl', this)"
+                title="Salin kode"
+              >
+                <i class="bi bi-clipboard"></i>
+              </button>
+              <pre id="codeCurl"><code>
+curl -X GET "https://viu.lutify.biz.id/api/proxy?apikey=ISI_APIKEY_ANDA&username=ISI_USERNAME&domain=gmail.com&password=ISI_PASSWORD&paket=1"
+            </code></pre>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- MODAL METODE PEMBAYARAN -->
+    <!-- MODAL PEMBAYARAN -->
     <div
       class="modal fade"
       id="paymentModal"
@@ -251,6 +574,7 @@
                   src="image/bca.png"
                   alt="BCA"
                   class="pay-bank-img"
+                  style="height: 24px"
                   onerror="this.style.display='none';this.parentNode.querySelector('.bi-bank2').style.display='inline-block';"
                 />
                 <i
@@ -277,7 +601,7 @@
                   src="image/bni.png"
                   alt="BNI"
                   class="pay-bank-img"
-                  style="height: 12px"
+                  style="height: 24px"
                   onerror="this.style.display='none';this.parentNode.querySelector('.bi-bank').style.display='inline-block';"
                 />
                 <i
@@ -304,7 +628,7 @@
                   src="image/bri.png"
                   alt="BRI"
                   class="pay-bank-img"
-                  style="height: 12px"
+                  style="height: 24px"
                   onerror="this.style.display='none';this.parentNode.querySelector('.bi-cash-coin').style.display='inline-block';"
                 />
                 <i
@@ -331,7 +655,7 @@
                   src="image/qris.png"
                   alt="QRIS"
                   class="pay-bank-img"
-                  style="height: 12px"
+                  style="height: 24px"
                   onerror="this.style.display='none';this.parentNode.querySelector('.bi-qr-code').style.display='inline-block';"
                 />
                 <i
@@ -351,7 +675,80 @@
       </div>
     </div>
 
+    <!-- Toast Notifications -->
+    <div
+      class="toast-container position-fixed bottom-0 end-0 p-3"
+      id="toastContainer"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div
+        id="toast"
+        class="toast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="toast-header">
+          <strong class="me-auto" id="toastTitle">Notification</strong>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="toast-body" id="toastMessage"></div>
+      </div>
+    </div>
+
+    <!-- Floating WA Icon -->
+    <a
+      href="https://wa.me/6281234567890"
+      target="_blank"
+      id="wa-float-btn"
+      title="Chat via WhatsApp"
+    >
+      <i class="bi bi-whatsapp"></i>
+    </a>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="mb-1">
+        &copy; <span id="tahun"></span> VIU Generator API &middot; All rights
+        reserved.
+      </div>
+      <div
+        class="d-flex flex-column align-items-center gap-1"
+        style="font-size: 1.07rem"
+      >
+        <span class="contact-link">
+          <i class="bi bi-envelope-at"></i>
+          <a href="mailto:support@domainanda.com">support@domainanda.com</a>
+        </span>
+        <span class="contact-link">
+          <i class="bi bi-whatsapp"></i>
+          <a href="https://wa.me/6281234567890" target="_blank"
+            >+62 812-3456-7890</a
+          >
+        </span>
+      </div>
+    </footer>
     <script>
+      document.getElementById("tahun").textContent = new Date().getFullYear();
+
+      // Fungsi Copy Code untuk Semua Tab
+      function copyCode(codeId, btn) {
+        var code = document.getElementById(codeId).innerText;
+        navigator.clipboard.writeText(code).then(function () {
+          btn.innerHTML = '<i class="bi bi-check-lg text-success"></i>';
+          btn.disabled = true;
+          setTimeout(function () {
+            btn.innerHTML = '<i class="bi bi-clipboard"></i>';
+            btn.disabled = false;
+          }, 1200);
+        });
+      }
+
       if (!localStorage.getItem("token")) location = "index.html";
       let user;
 
@@ -372,102 +769,124 @@
         window.location = "index.html";
       }
 
+      // Whitelist Input Validasi: hanya angka dan titik (prevent huruf)
+      document.addEventListener("DOMContentLoaded", function () {
+        const wlInput = document.getElementById("wlItem");
+        wlInput.addEventListener("keydown", function (e) {
+          if (
+            [8, 9, 13, 27, 46, 110, 190].includes(e.keyCode) ||
+            ((e.ctrlKey || e.metaKey) &&
+              [65, 67, 86, 88, 90].includes(e.keyCode)) ||
+            (e.keyCode >= 35 && e.keyCode <= 40)
+          )
+            return;
+          if (
+            (e.keyCode < 48 || e.keyCode > 57) &&
+            (e.keyCode < 96 || e.keyCode > 105)
+          )
+            e.preventDefault();
+        });
+        wlInput.addEventListener("input", function (e) {
+          this.value = this.value.replace(/[^0-9.]/g, "");
+        });
+      });
+
       async function updateWhitelist() {
         if (!user) return;
-        const list = user.whitelist || [];
-        let html = "";
-        list.forEach((item) => {
-          html += `<li class="list-group-item d-flex justify-content-between align-items-center">
-            <span><i class="bi bi-globe"></i> ${item}</span>
-            <button class="btn btn-sm btn-danger" onclick="delWhitelist('${item}')"><i class="bi bi-trash"></i> Hapus</button>
-          </li>`;
-        });
-        document.getElementById("whitelistList").innerHTML = html;
+        const ip = (user.whitelist && user.whitelist[0]) || "";
+        const input = document.getElementById("wlItem");
+        const btn = document.getElementById("saveIpBtn");
+        const info = document.getElementById("whitelistInfo");
+
+        if (ip) {
+          input.value = ip;
+          input.disabled = true;
+          btn.innerHTML = '<i class="bi bi-eraser"></i> Ganti IP';
+          btn.className = "btn btn-warning w-100";
+          info.innerHTML = `Whitelist IP Anda: <b>${ip}</b><br>Untuk mengganti, klik tombol <b>Ganti IP</b>.`;
+        } else {
+          input.value = "";
+          input.disabled = false;
+          btn.innerHTML = '<i class="bi bi-shield-check"></i> Simpan IP';
+          btn.className = "btn btn-success w-100";
+          info.innerHTML = "";
+        }
       }
 
       document.getElementById("wlForm").onsubmit = async function (e) {
         e.preventDefault();
-        const item = document.getElementById("wlItem").value;
-        const resp = await fetch("/api/whitelist/add", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({ item }),
-        });
-        const data = await resp.json();
-        if (data.status === "ok") {
-          user.whitelist = data.whitelist;
-          updateWhitelist();
-          document.getElementById("wlItem").value = "";
-          showToast("Berhasil menambahkan IP/Domain ke whitelist.", "success");
+        const ipInput = document.getElementById("wlItem");
+        const btn = document.getElementById("saveIpBtn");
+        if (ipInput.disabled) {
+          const resp = await fetch("/api/whitelist/delete", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            body: JSON.stringify({ item: ipInput.value }),
+          });
+          const data = await resp.json();
+          if (data.status === "ok") {
+            user.whitelist = [];
+            updateWhitelist();
+            showToast("IP Whitelist dihapus, silakan isi IP baru.", "info");
+          } else {
+            showToast(data.message, "danger");
+          }
         } else {
-          showToast(data.message, "danger");
+          const ip = ipInput.value.trim();
+          if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) {
+            showToast("Format IP tidak valid!", "danger");
+            return;
+          }
+          const resp = await fetch("/api/whitelist/add", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            body: JSON.stringify({ item: ip }),
+          });
+          const data = await resp.json();
+          if (data.status === "ok") {
+            user.whitelist = data.whitelist;
+            updateWhitelist();
+            showToast("Whitelist IP berhasil disimpan.", "success");
+          } else {
+            showToast(data.message, "danger");
+          }
         }
       };
 
-      async function delWhitelist(item) {
-        if (!confirm("Hapus?")) return;
-        const resp = await fetch("/api/whitelist/delete", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({ item }),
-        });
-        const data = await resp.json();
-        if (data.status === "ok") {
-          user.whitelist = data.whitelist;
-          updateWhitelist();
-          showToast("IP/Domain berhasil dihapus dari whitelist.", "success");
-        } else {
-          showToast(data.message, "danger");
-        }
-      }
-
-      async function testApi() {
-        if (!user.apiKey) return showToast("API Key belum aktif!", "danger");
-        let params = `username=test&domain=test.com&password=123&paket=1&apikey=${user.apiKey}`;
-        const resp = await fetch("/api/proxy?" + params);
-        const data = await resp.json();
-        document.getElementById("apiTestResult").textContent = JSON.stringify(
-          data,
-          null,
-          2
-        );
-      }
-
-      // BAGIAN API KEY + COPY DI POJOK KANAN
       function renderApiKeyInfo() {
         const apiKeyDiv = document.getElementById("apiKeyTable");
         if (user.apiKey && user.apiKeyExpired) {
           apiKeyDiv.innerHTML = `
-            <tr>
-              <th>API Key</th>
-              <td>
-                <div class="apikey-box justify-content-between">
-                  <span class="apikey-value" id="apiKeyValue">${user.apiKey}</span>
-                  <button class="copy-btn" id="copyApiKeyBtn" title="Salin API Key">
-                    <i class="bi bi-clipboard"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th>Expired</th>
-              <td><i class="bi bi-calendar-x"></i> ${new Date(user.apiKeyExpired).toLocaleString()}</td>
-            </tr>
-          `;
+        <tr>
+          <th>API Key</th>
+          <td>
+            <div class="apikey-box justify-content-between">
+              <span class="apikey-value" id="apiKeyValue">${user.apiKey}</span>
+              <button class="copy-btn" id="copyApiKeyBtn" title="Salin API Key">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Expired</th>
+          <td><i class="bi bi-calendar-x"></i> ${new Date(user.apiKeyExpired).toLocaleString()}</td>
+        </tr>
+      `;
           setTimeout(() => {
             document.getElementById("copyApiKeyBtn").onclick = copyApiKey;
-          }, 50);
+          }, 30);
         } else {
           apiKeyDiv.innerHTML = `
-            <tr><th>API Key</th><td>-</td></tr>
-            <tr><th>Expired</th><td>-</td></tr>
-          `;
+        <tr><th>API Key</th><td>-</td></tr>
+        <tr><th>Expired</th><td>-</td></tr>
+      `;
         }
       }
 
@@ -475,7 +894,6 @@
         const apiKey = document.getElementById("apiKeyValue").innerText;
         navigator.clipboard.writeText(apiKey);
         const btn = document.getElementById("copyApiKeyBtn");
-        const oldHtml = btn.innerHTML;
         btn.innerHTML = '<i class="bi bi-check-lg text-success"></i>';
         btn.disabled = true;
         showToast("API Key berhasil disalin!", "success");
@@ -485,35 +903,37 @@
         }, 1200);
       }
 
-      // SECTION BUTTONS: Payment, Perpanjang, Generate
       function renderApiBtnSection() {
         const container = document.getElementById("apiBtnSection");
         let expired = user.apiKeyExpired
           ? new Date(user.apiKeyExpired) < new Date()
           : true;
-
         if (!user.apiKey || expired) {
           container.innerHTML = `
-            <button class="btn btn-primary w-100 mb-2" id="payApiBtn">
-              <i class="bi bi-wallet2"></i> Berlangganan API
-            </button>
-          `;
-          document.getElementById("payApiBtn").onclick = showPaymentModal;
+        <button class="btn btn-primary w-100 mb-2" id="payApiBtn" type="button">
+          <i class="bi bi-wallet2"></i> Berlangganan API
+        </button>
+      `;
+          setTimeout(() => {
+            document.getElementById("payApiBtn").onclick = showPaymentModal;
+          }, 10);
         } else {
           container.innerHTML = `
-            <button class="btn btn-warning w-100 mb-2" id="generateApiKeyBtn">
-              <i class="bi bi-arrow-repeat"></i> Generate New API Key
-            </button>
-            <button class="btn btn-success w-100" id="renewApiBtn">
-              <i class="bi bi-arrow-up-right-circle"></i> Perpanjang API
-            </button>
-          `;
-          document.getElementById("generateApiKeyBtn").onclick = generateApiKey;
-          document.getElementById("renewApiBtn").onclick = showPaymentModal;
+        <button class="btn btn-warning w-100 mb-2" id="generateApiKeyBtn" type="button">
+          <i class="bi bi-arrow-repeat"></i> Generate New API Key
+        </button>
+        <button class="btn btn-success w-100" id="renewApiBtn" type="button">
+          <i class="bi bi-arrow-up-right-circle"></i> Perpanjang API
+        </button>
+      `;
+          setTimeout(() => {
+            document.getElementById("generateApiKeyBtn").onclick =
+              generateApiKey;
+            document.getElementById("renewApiBtn").onclick = showPaymentModal;
+          }, 10);
         }
       }
 
-      // Generate API Key
       async function generateApiKey() {
         const resp = await fetch("/api/generate-api-key", {
           method: "POST",
@@ -533,7 +953,6 @@
         }
       }
 
-      // TAMPILKAN MODAL PEMBAYARAN
       function showPaymentModal() {
         var modal = new bootstrap.Modal(
           document.getElementById("paymentModal")
@@ -541,7 +960,6 @@
         modal.show();
       }
 
-      // Submit pembayaran (buat invoice)
       document.getElementById("paymentForm").onsubmit = async function (e) {
         e.preventDefault();
         const method = document.querySelector(
@@ -570,7 +988,6 @@
         }
       };
 
-      // Show toast notification
       function showToast(message, type) {
         const toastTitle = document.getElementById("toastTitle");
         const toastMessage = document.getElementById("toastMessage");
@@ -578,7 +995,6 @@
         else if (type === "info") toastTitle.textContent = "Info";
         else toastTitle.textContent = "Error";
         toastMessage.textContent = message;
-
         const toast = new bootstrap.Toast(document.getElementById("toast"));
         toast.show();
       }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
@@ -14,28 +14,43 @@
     />
     <style>
       body {
-        background: #f3f6fa;
+        background: linear-gradient(120deg, #f9fcff 0%, #e3f2fd 100%);
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        min-height: 100vh;
       }
       .card {
         border: none;
         border-radius: 1.5rem;
+        box-shadow: 0 6px 28px #0f69ee14;
       }
       .icon-check,
       .icon-fail,
       .icon-warn {
-        font-size: 3rem;
-        margin-bottom: 12px;
-        animation: bounce-in 0.5s;
+        font-size: 3.3rem;
+        margin-bottom: 16px;
+        animation: bounce-in 0.55s;
         display: inline-block;
+        background: linear-gradient(100deg, #28edbd 0%, #19d0fb 60%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
       .icon-check {
         color: #1cc88a;
+        background: linear-gradient(90deg, #1cc88a 0%, #09b9ed 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
       .icon-fail {
         color: #e3342f;
+        background: linear-gradient(90deg, #e3342f 0%, #e67b7b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
       .icon-warn {
         color: #f0ad4e;
+        background: linear-gradient(90deg, #ffb96c 0%, #ffc107 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
       @keyframes bounce-in {
         0% {
@@ -51,12 +66,69 @@
         }
       }
       .invoice-table th {
-        background: #f7f9fc;
-        width: 160px;
+        background: #f7fafd;
+        width: 150px;
+        color: #1166b2;
+        font-weight: 600;
       }
       .table td,
       .table th {
         vertical-align: middle !important;
+      }
+      .btn-outline-primary {
+        font-weight: 600;
+        border-radius: 1.7em;
+        padding: 8px 28px;
+        font-size: 1.07rem;
+      }
+      .btn-success,
+      .btn-outline-success {
+        border-radius: 1.5em;
+        font-weight: 600;
+      }
+      .badge {
+        font-size: 1rem;
+        letter-spacing: 0.7px;
+      }
+      .table-responsive {
+        border-radius: 1.1em;
+        overflow: hidden;
+      }
+      .main-title {
+        font-weight: 900;
+        background: linear-gradient(90deg, #0f67db 0%, #03e3fd 80%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 2rem;
+        margin-bottom: 8px;
+      }
+      .subtitle {
+        color: #586d95;
+        font-size: 1.14rem;
+        margin-bottom: 32px;
+      }
+      @media (max-width: 580px) {
+        .main-title {
+          font-size: 1.3rem;
+        }
+        .card {
+          border-radius: 1em;
+        }
+        .btn-outline-primary,
+        .btn-success,
+        .btn-outline-success {
+          font-size: 1em;
+          padding: 7px 18px;
+        }
+        .icon-check,
+        .icon-fail,
+        .icon-warn {
+          font-size: 2.2rem;
+        }
+        .invoice-table th {
+          width: 90px;
+          font-size: 0.98em;
+        }
       }
     </style>
   </head>
@@ -67,10 +139,10 @@
           <div class="card shadow-lg">
             <div class="card-body text-center">
               <div id="iconStatus" class="mb-2"></div>
-              <h2 class="mb-2" id="mainTitle">Pembayaran</h2>
-              <p class="text-muted mb-4" id="subtitle">
+              <div class="main-title" id="mainTitle">Pembayaran</div>
+              <div class="subtitle" id="subtitle">
                 Menunggu status pembayaran...
-              </p>
+              </div>
               <div id="invoiceBox"></div>
               <a href="dashboard.html" class="btn btn-outline-primary mt-4">
                 <i class="bi bi-arrow-left"></i> Kembali ke Dashboard
@@ -87,7 +159,7 @@
       const mainTitle = document.getElementById("mainTitle");
       const subtitle = document.getElementById("subtitle");
 
-      function showStatusIcon(type, text) {
+      function showStatusIcon(type) {
         if (type === "success") {
           iconStatus.innerHTML =
             '<span class="icon-check"><i class="bi bi-patch-check-fill"></i></span>';
@@ -119,10 +191,8 @@
         document.getElementById("invoiceBox").innerHTML =
           '<div class="alert alert-danger mt-3">Tidak ada reference pembayaran.</div>';
       } else {
-        // Loading
         document.getElementById("invoiceBox").innerHTML =
           '<div class="text-center my-4"><div class="spinner-border text-primary" role="status"></div><div>Memuat detail invoice...</div></div>';
-        // Fetch invoice detail
         fetch("/api/invoice/detail/" + ref, {
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         })
@@ -138,7 +208,6 @@
                 "Terjadi masalah, pembayaran Anda belum terdeteksi di sistem kami.";
             } else {
               const inv = data.data;
-              // Status-based icon and text
               if (inv.status === "PAID" || inv.status === "SETTLED") {
                 showStatusIcon("success");
               } else if (
@@ -156,14 +225,14 @@
                 inv.status === "PAID" || inv.status === "SETTLED"
                   ? '<span class="badge rounded-pill text-bg-success px-3 py-2"><i class="bi bi-check-circle"></i> Lunas</span>'
                   : inv.status === "EXPIRED"
-                  ? '<span class="badge rounded-pill text-bg-danger px-3 py-2"><i class="bi bi-x-octagon"></i> Expired</span>'
-                  : inv.status === "FAILED" ||
-                    inv.status === "REFUND" ||
-                    inv.status === "FAILED_REFUND"
-                  ? '<span class="badge rounded-pill text-bg-danger px-3 py-2"><i class="bi bi-x-circle"></i> Gagal</span>'
-                  : '<span class="badge rounded-pill text-bg-warning px-3 py-2"><i class="bi bi-clock-history"></i> ' +
-                    inv.status +
-                    "</span>";
+                    ? '<span class="badge rounded-pill text-bg-danger px-3 py-2"><i class="bi bi-x-octagon"></i> Expired</span>'
+                    : inv.status === "FAILED" ||
+                        inv.status === "REFUND" ||
+                        inv.status === "FAILED_REFUND"
+                      ? '<span class="badge rounded-pill text-bg-danger px-3 py-2"><i class="bi bi-x-circle"></i> Gagal</span>'
+                      : '<span class="badge rounded-pill text-bg-warning px-3 py-2"><i class="bi bi-clock-history"></i> ' +
+                        inv.status +
+                        "</span>";
               document.getElementById("invoiceBox").innerHTML = `
               <div class="mb-3">
                 <h5>Invoice <span class="text-primary">${
@@ -177,8 +246,8 @@
                 <tr><th>Nama</th><td>${inv.customer_name}</td></tr>
                 <tr><th>Email</th><td>${inv.customer_email}</td></tr>
                 <tr><th>Metode</th><td>${inv.payment_method} <small>(${
-                inv.payment_name
-              })</small></td></tr>
+                  inv.payment_name
+                })</small></td></tr>
                 <tr><th>Nominal</th><td><span class="fw-bold">Rp ${inv.amount.toLocaleString()}</span></td></tr>
                 <tr><th>Waktu Bayar</th><td>${
                   inv.paid_at

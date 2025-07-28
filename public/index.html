@@ -2,138 +2,379 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Login | API Demo</title>
+    <title>VIU Generator API - Otomasi Akun</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
-      rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
     />
     <link
-      rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
     />
     <style>
       body {
-        background: #f8f9fa;
+        background: linear-gradient(120deg, #f9fcff 0%, #e3f2fd 100%);
         min-height: 100vh;
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        color: #222b45;
+      }
+      .navbar {
+        background: transparent !important;
+        box-shadow: none;
+        padding-top: 18px;
+        padding-bottom: 12px;
+      }
+      .logo {
+        font-weight: 700;
+        font-size: 1.45rem;
+        color: #1a56c6;
+        letter-spacing: 2px;
+      }
+      .nav-link-login {
+        color: #1877f2 !important;
+        font-weight: 600;
+        font-size: 1.08rem;
+        border-radius: 22px;
+        padding: 8px 23px !important;
+        background: #fff;
+        border: 1.5px solid #1877f2;
+        margin-left: 18px;
+        transition: 0.13s;
+      }
+      .nav-link-login:hover {
+        background: #e5f0fd;
+        color: #0e57b3 !important;
+        text-decoration: none;
+      }
+      .hero-row {
         display: flex;
         align-items: center;
         justify-content: center;
+        padding-top: 60px;
+        padding-bottom: 40px;
+        gap: 25px;
+        flex-wrap: wrap;
       }
-      .login-card {
-        border-radius: 1.2rem;
-        box-shadow: 0 6px 32px 0 rgba(0, 0, 0, 0.07);
+      .hero-img {
+        max-width: 370px;
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 10px 36px #16b9fa17);
+        animation: float 4s ease-in-out infinite;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-14px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+      .hero-content {
+        max-width: 460px;
+        min-width: 270px;
         margin: 0 auto;
+        text-align: left;
       }
-      .card-header {
-        background: linear-gradient(90deg, #007bff 60%, #2989d8 100%);
+      .hero-title {
+        font-size: 2.4rem;
+        font-weight: 900;
+        margin-bottom: 12px;
+        background: linear-gradient(90deg, #0f67db 0%, #03e3fd 80%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero-desc {
+        color: #586d95;
+        font-size: 1.13rem;
+        margin-bottom: 17px;
+      }
+      .hero-price {
+        background: #fff;
+        color: #1977f3;
+        font-size: 1.19rem;
+        font-weight: bold;
+        display: inline-block;
+        border-radius: 36px;
+        padding: 8px 25px 8px 19px;
+        margin-bottom: 22px;
+        box-shadow: 0 2px 9px #08bbff16;
+        border: 1.3px solid #c6ebfd;
+      }
+      .hero-cta {
+        padding: 11px 38px;
+        border-radius: 36px;
+        font-weight: 700;
+        font-size: 1.18rem;
+        background: linear-gradient(90deg, #1877f2, #02e3fd 70%);
         color: #fff;
-        font-size: 1.4rem;
-        border-radius: 1.2rem 1.2rem 0 0;
+        border: none;
+        transition: 0.18s;
+        box-shadow: 0 2px 14px #06b1c627;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .hero-cta:hover {
+        background: linear-gradient(90deg, #02e3fd, #1877f2 80%);
+        color: #fff;
         letter-spacing: 1px;
       }
-      .card-body {
-        padding: 2.2rem 2rem 2rem 2rem;
+      .section-how {
+        max-width: 780px;
+        margin: 36px auto 0 auto;
+        background: #fff;
+        border-radius: 1.1rem;
+        box-shadow: 0 2px 32px #96dafb25;
+        padding: 28px 24px 18px 24px;
+        text-align: center;
       }
-      .btn-custom {
-        background-color: #007bff;
-        color: white;
-        width: 100%;
-        font-weight: 500;
-        letter-spacing: 0.3px;
-        border-radius: 0.5rem;
-        transition: background 0.2s;
+      .steps {
+        margin: 20px 0 0 0;
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+        justify-content: center;
       }
-      .btn-custom:hover,
-      .btn-custom:focus {
-        background-color: #0056b3;
+      .step {
+        min-width: 150px;
+        max-width: 200px;
+        background: #f6fbfe;
+        border-radius: 10px;
+        padding: 15px 12px 10px 12px;
+        box-shadow: 0 1px 7px #4bc1f13d;
+        font-size: 1.02rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
-      .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.18);
+      .step i {
+        font-size: 2.1rem;
+        margin-bottom: 6px;
+        color: #0f67db;
       }
-      @media (max-width: 576px) {
-        .card-body {
-          padding: 1.2rem;
+      .step b {
+        color: #1678f2;
+        font-weight: 700;
+      }
+      .section-how code {
+        background: #f3f7fd;
+        color: #2477b7;
+        border-radius: 6px;
+        padding: 4px 11px;
+        font-size: 1.02rem;
+        margin: 0 5px;
+      }
+      .footer {
+        margin-top: 68px;
+        background: #fff;
+        border-top: 1.5px solid #e2edff;
+        padding: 30px 0 22px 0;
+        text-align: center;
+        font-size: 1.04rem;
+        color: #516a92;
+      }
+      .footer a {
+        color: #008aff;
+        text-decoration: none;
+      }
+      .contact-link i {
+        font-size: 1.22rem;
+        vertical-align: middle;
+        margin-right: 7px;
+      }
+      /* FLOATING WA BUTTON */
+      #wa-float-btn {
+        position: fixed;
+        right: 22px;
+        bottom: 25px;
+        z-index: 9999;
+        background: #25d366;
+        color: #fff;
+        border-radius: 50%;
+        width: 57px;
+        height: 57px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.25rem;
+        box-shadow: 0 4px 22px #0a583b2c;
+        transition:
+          background 0.2s,
+          transform 0.12s;
+        text-decoration: none;
+      }
+      #wa-float-btn:hover {
+        background: #21c05b;
+        color: #fff;
+        transform: scale(1.09);
+        text-decoration: none;
+      }
+      @media (max-width: 900px) {
+        .hero-row {
+          flex-direction: column;
+          padding-top: 44px;
         }
-        .login-card {
-          border-radius: 0.7rem;
+        .hero-content {
+          text-align: center;
+        }
+      }
+      @media (max-width: 640px) {
+        .hero-title {
+          font-size: 1.6rem;
+        }
+        .section-how {
+          padding: 18px 7px;
+        }
+        .steps {
+          gap: 7px;
+        }
+        .step {
+          min-width: 110px;
+          font-size: 0.95rem;
+        }
+        .hero-img {
+          max-width: 220px;
+        }
+      }
+      @media (max-width: 520px) {
+        #wa-float-btn {
+          width: 46px;
+          height: 46px;
+          font-size: 1.58rem;
+          right: 12px;
+          bottom: 15px;
         }
       }
     </style>
   </head>
   <body>
-    <div class="container-fluid py-5">
-      <div class="row justify-content-center">
-        <div class="col-12 col-sm-10 col-md-7 col-lg-5 col-xl-4">
-          <div class="card login-card shadow">
-            <div class="card-header text-center py-3">
-              <h4 class="mb-0"><i class="bi bi-person-circle"></i> Login</h4>
-            </div>
-            <div class="card-body">
-              <form id="loginForm" autocomplete="off">
-                <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    name="username"
-                    placeholder="Masukkan username"
-                    required
-                    autofocus
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="Masukkan password"
-                    required
-                  />
-                </div>
-                <button type="submit" class="btn btn-custom mt-2">
-                  <i class="bi bi-box-arrow-in-right"></i> Login
-                </button>
-              </form>
-              <div class="text-center mt-3">
-                <p class="mb-0">
-                  Belum punya akun? <a href="register.html">Daftar di sini</a>
-                </p>
-              </div>
-              <div class="alert mt-3 d-none" id="alertMsg"></div>
-            </div>
-          </div>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container d-flex justify-content-between align-items-center">
+        <span class="logo"><i class="bi bi-lightning-charge"></i> VIU API</span>
+        <a href="login.html" class="nav-link-login d-none d-md-inline-block">
+          <i class="bi bi-box-arrow-in-right"></i> Login
+        </a>
+        <!-- Untuk mobile, muncul di bawah -->
+      </div>
+    </nav>
+    <div class="container d-md-none mt-2 mb-3 text-end">
+      <a href="login.html" class="nav-link-login">
+        <i class="bi bi-box-arrow-in-right"></i> Login
+      </a>
+    </div>
+
+    <!-- Hero Section with Illustration -->
+    <div class="container hero-row">
+      <div>
+        <!-- Gambar ilustrasi hero (bisa ganti dengan gambar lain jika mau) -->
+        <img
+          src="image/index.png"
+          alt="API Automation Illustration"
+          class="hero-img"
+        />
+      </div>
+      <div class="hero-content">
+        <div class="hero-title">
+          Otomasi Akun VIU<br />Hemat Waktu, Praktis & Siap Pakai!
         </div>
+        <div class="hero-desc">
+          <b>VIU Generator API</b> adalah solusi otomatisasi pembuatan akun VIU
+          untuk reseller, bot, atau project digitalmu.<br />
+          API Key instan, endpoint simpel.<br />
+        </div>
+        <div class="hero-price">
+          <i class="bi bi-tag"></i> <b>Rp30.000</b> / bulan
+        </div>
+        <br />
+        <a href="register.html" class="hero-cta">
+          <i class="bi bi-person-plus"></i> Daftar
+        </a>
       </div>
     </div>
+
+    <!-- How It Works Section -->
+    <div class="section-how mt-3">
+      <div class="text-center mb-2">
+        <b>Cara Mulai Mudah:</b>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <i class="bi bi-person-add"></i>
+          <b>Daftar Akun</b>
+          <span class="text-muted" style="font-size: 0.96em"
+            >Cuma 1 menit!</span
+          >
+        </div>
+        <div class="step">
+          <i class="bi bi-credit-card-2-front"></i>
+          <b>Pembayaran</b>
+          <span class="text-muted" style="font-size: 0.96em"
+            >Pilih metode favoritmu</span
+          >
+        </div>
+        <div class="step">
+          <i class="bi bi-key"></i>
+          <b>API Key Aktif</b>
+          <span class="text-muted" style="font-size: 0.96em"
+            >Langsung siap digunakan</span
+          >
+        </div>
+        <div class="step">
+          <i class="bi bi-rocket-takeoff"></i>
+          <b>Pakai API</b>
+          <span class="text-muted" style="font-size: 0.96em"
+            >Integrasi & automation mudah</span
+          >
+        </div>
+      </div>
+      <hr class="my-3" />
+      <div class="text-center" style="font-size: 1.09rem">
+        <i class="bi bi-code-slash"></i>
+        <b>Endpoint utama:</b>
+        <code>GET /api/proxy?apikey=xxx...</code>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="mb-1">
+        &copy; <span id="tahun"></span> VIU Generator API &middot; All rights
+        reserved.
+      </div>
+      <div
+        class="d-flex flex-column align-items-center gap-1"
+        style="font-size: 1.07rem"
+      >
+        <span class="contact-link">
+          <i class="bi bi-envelope-at"></i>
+          <a href="mailto:support@domainanda.com">support@domainanda.com</a>
+        </span>
+        <span class="contact-link">
+          <i class="bi bi-whatsapp"></i>
+          <a href="https://wa.me/6281234567890" target="_blank"
+            >+62 812-3456-7890</a
+          >
+        </span>
+      </div>
+    </footer>
+
+    <!-- Floating WA Icon -->
+    <a
+      href="https://wa.me/6281234567890"
+      target="_blank"
+      id="wa-float-btn"
+      title="Chat via WhatsApp"
+    >
+      <i class="bi bi-whatsapp"></i>
+    </a>
+
     <script>
-      document.getElementById("loginForm").onsubmit = async function (e) {
-        e.preventDefault();
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-        const resp = await fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        });
-        const data = await resp.json();
-        const alert = document.getElementById("alertMsg");
-        if (data.token) {
-          alert.classList.remove("d-none", "alert-danger");
-          alert.classList.add("alert-success");
-          alert.innerText = "Login berhasil, mengarahkan ke dashboard...";
-          localStorage.setItem("token", data.token);
-          setTimeout(() => (window.location = "dashboard.html"), 800);
-        } else {
-          alert.classList.remove("d-none", "alert-success");
-          alert.classList.add("alert-danger");
-          alert.innerText = data.message || "Login gagal";
-        }
-      };
+      document.getElementById("tahun").textContent = new Date().getFullYear();
     </script>
   </body>
 </html>

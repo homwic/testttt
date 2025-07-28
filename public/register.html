@@ -2,7 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Daftar Akun & Verifikasi OTP</title>
+    <title>Daftar Akun & Verifikasi OTP | VIU Generator API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
@@ -14,8 +14,10 @@
     />
     <style>
       body {
-        background: #f6f7fb;
+        background: linear-gradient(120deg, #f9fcff 0%, #e3f2fd 100%);
         min-height: 100vh;
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        color: #222b45;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -24,71 +26,97 @@
         background: #fff;
         border-radius: 18px;
         box-shadow:
-          0 4px 32px 0 #0011350f,
-          0 1.5px 7px #0011351a;
+          0 4px 32px 0 #007bff18,
+          0 1.5px 7px #00a9d81c;
         margin: 0 auto 16px auto;
         padding: 0;
         overflow: hidden;
+        max-width: 430px;
       }
       .reg-header {
-        background: #028aff;
+        background: linear-gradient(90deg, #028aff 60%, #03e3fd 100%);
         color: #fff;
-        font-size: 1.7rem;
+        font-size: 1.45rem;
         font-weight: 600;
         text-align: center;
-        padding: 25px 0 14px;
+        padding: 23px 0 11px;
         border-bottom: 1px solid #e9ecef;
+        letter-spacing: 1px;
       }
       .reg-header .bi {
-        font-size: 2.2rem;
+        font-size: 2.1rem;
         vertical-align: middle;
         margin-bottom: 4px;
       }
       .reg-body {
-        padding: 32px 32px 18px;
+        padding: 30px 30px 18px;
       }
       .reg-footer {
         background: #fafcff;
-        padding: 17px 32px 18px;
+        padding: 15px 30px 18px;
         border-top: 1px solid #f1f2f4;
         font-size: 1rem;
         text-align: center;
       }
+      .reg-footer a {
+        color: #028aff;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .reg-footer a:hover {
+        text-decoration: underline;
+        color: #0071cb;
+      }
       .btn-primary {
-        background: #028aff;
+        background: linear-gradient(90deg, #028aff 80%, #03e3fd 100%);
         border: none;
+        font-weight: 600;
+        letter-spacing: 0.6px;
       }
       .btn-primary:hover,
       .btn-primary:focus {
-        background: #0367c6;
+        background: linear-gradient(90deg, #03e3fd, #028aff 100%);
+      }
+      .btn-success {
+        background: linear-gradient(90deg, #11bb71 60%, #5ce3c9 100%);
+        border: none;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+      }
+      .btn-success:hover,
+      .btn-success:focus {
+        background: linear-gradient(90deg, #34e1a8, #08ae7b 80%);
       }
       .alert {
         font-size: 0.97rem;
       }
       .otp-card {
         border-radius: 16px;
-        box-shadow: 0 1px 8px #028aff17;
+        box-shadow: 0 2px 16px #11bb7122;
+      }
+      .otp-card .reg-header {
+        background: linear-gradient(90deg, #11bb71 80%, #22ffe2 100%);
       }
       @media (max-width: 600px) {
         .reg-body,
         .reg-footer {
-          padding-left: 16px;
-          padding-right: 16px;
+          padding-left: 13px;
+          padding-right: 13px;
         }
         .reg-header {
-          font-size: 1.1rem;
-          padding: 18px 0 8px;
+          font-size: 1.12rem;
+          padding: 15px 0 6px;
         }
         .reg-box,
         .otp-card {
           border-radius: 11px;
         }
       }
-      @media (max-width: 400px) {
+      @media (max-width: 430px) {
         .reg-body,
         .reg-footer {
-          padding-left: 7px;
-          padding-right: 7px;
+          padding-left: 5px;
+          padding-right: 5px;
         }
       }
     </style>
@@ -100,7 +128,7 @@
         <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
           <div class="reg-box shadow" id="registerCard">
             <div class="reg-header">
-              <i class="bi bi-person-plus"></i> Daftar Akun
+              <i class="bi bi-person-plus"></i> Daftar Akun Baru
             </div>
             <div class="reg-body">
               <form id="regForm" autocomplete="off">
@@ -138,18 +166,21 @@
                   />
                 </div>
                 <button class="btn btn-primary w-100 mb-1" type="submit">
-                  <i class="bi bi-send"></i> Daftar
+                  <i class="bi bi-send"></i> Daftar & Kirim OTP
                 </button>
               </form>
               <div class="alert mt-3 d-none" id="alertMsg"></div>
             </div>
             <div class="reg-footer">
-              Sudah punya akun? <a href="index.html">Login di sini</a>
+              Sudah punya akun?
+              <a href="login.html"
+                ><i class="bi bi-box-arrow-in-right"></i> Login di sini</a
+              >
             </div>
           </div>
           <!-- OTP Card -->
           <div class="reg-box otp-card shadow d-none" id="otpCard">
-            <div class="reg-header" style="background: #07b478">
+            <div class="reg-header">
               <i class="bi bi-shield-lock"></i> Verifikasi OTP
             </div>
             <div class="reg-body">
@@ -225,7 +256,7 @@
           otpAlert.classList.remove("d-none", "alert-danger");
           otpAlert.classList.add("alert-success");
           otpAlert.innerText = data.message + " Silakan login.";
-          setTimeout(() => (window.location = "index.html"), 1500);
+          setTimeout(() => (window.location = "login.html"), 1500);
         } else {
           otpAlert.classList.remove("d-none", "alert-success");
           otpAlert.classList.add("alert-danger");

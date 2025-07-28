@@ -2,7 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Profile | API Demo</title>
+    <title>Profile | VIU Generator API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
@@ -13,37 +13,71 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
     />
     <style>
+      html,
       body {
-        background: #f8f9fa;
+        height: 100%;
+        min-height: 100vh;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: linear-gradient(120deg, #f9fcff 0%, #e3f2fd 100%);
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      }
+      .main-content {
+        flex: 1 0 auto;
       }
       .navbar-custom {
-        background-color: #007bff;
+        background: linear-gradient(90deg, #028aff 80%, #03e3fd 100%);
         color: white;
+        box-shadow: 0 2px 16px #007bff09;
       }
       .navbar-custom .navbar-brand {
         color: white;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        font-size: 1.25rem;
+      }
+      .navbar-custom .btn-info {
+        background: #fff;
+        color: #028aff;
+        font-weight: 600;
+        border: none;
+      }
+      .navbar-custom .btn-info:hover {
+        background: #e9f5ff;
+        color: #1877f2;
       }
       .navbar-custom .btn-danger {
         background-color: #e3342f;
         color: white;
+        border: none;
+      }
+      .navbar-custom .btn-danger:hover {
+        background: #bb2223;
       }
       .card {
-        border-radius: 1rem;
+        border-radius: 1.15rem;
+        box-shadow: 0 4px 28px #0095ff17;
+        border: none;
       }
-      .apikey-box {
-        font-family: monospace;
-        background: #e9ecef;
-        padding: 7px 15px;
-        border-radius: 7px;
-        display: flex;
-        align-items: center;
+      .profile-title {
+        font-weight: 800;
+        font-size: 1.45rem;
+        color: #1178e4;
+        letter-spacing: 0.7px;
+      }
+      .profile-table th,
+      .profile-table td {
+        vertical-align: middle;
+        font-size: 1.07rem;
       }
       .icon-cell {
         width: 32px;
         text-align: center;
         color: #007bff;
-        font-size: 1.3rem;
-        vertical-align: middle;
+        font-size: 1.25rem;
       }
       .icon-key {
         color: #6366f1;
@@ -53,13 +87,91 @@
         color: #e3342f;
         margin-right: 6px;
       }
+      .apikey-box {
+        font-family: monospace;
+        background: #eaf5fd;
+        padding: 5px 13px;
+        border-radius: 7px;
+        display: inline-block;
+        font-size: 1rem;
+        word-break: break-all;
+      }
+      .status-badge {
+        font-size: 1rem;
+        padding: 0.4em 0.9em 0.4em 0.9em;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        border-radius: 2em;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      /* Footer */
+      .footer {
+        flex-shrink: 0;
+        margin-top: 40px;
+        background: #fff;
+        border-top: 1.5px solid #e2edff;
+        padding: 30px 0 22px 0;
+        text-align: center;
+        font-size: 1.04rem;
+        color: #516a92;
+      }
+      .footer a {
+        color: #008aff;
+        text-decoration: none;
+      }
+      .contact-link i {
+        font-size: 1.22rem;
+        vertical-align: middle;
+        margin-right: 7px;
+      }
+      /* Floating WA */
+      #wa-float-btn {
+        position: fixed;
+        right: 22px;
+        bottom: 25px;
+        z-index: 9999;
+        background: #25d366;
+        color: #fff;
+        border-radius: 50%;
+        width: 57px;
+        height: 57px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.25rem;
+        box-shadow: 0 4px 22px #0a583b2c;
+        transition:
+          background 0.2s,
+          transform 0.12s;
+        text-decoration: none;
+      }
+      #wa-float-btn:hover {
+        background: #21c05b;
+        color: #fff;
+        transform: scale(1.09);
+        text-decoration: none;
+      }
       @media (max-width: 540px) {
         .container {
           padding-left: 5px;
           padding-right: 5px;
         }
         .card {
-          padding: 0.4rem;
+          padding: 0.2rem;
+        }
+        .profile-title {
+          font-size: 1.1rem;
+        }
+      }
+      @media (max-width: 520px) {
+        #wa-float-btn {
+          width: 46px;
+          height: 46px;
+          font-size: 1.58rem;
+          right: 12px;
+          bottom: 15px;
         }
       }
     </style>
@@ -67,9 +179,9 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-custom mb-4">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="#"
-          ><i class="bi bi-code-slash"></i> API Demo</a
-        >
+        <a class="navbar-brand fw-bold" href="dashboard.html">
+          <i class="bi bi-lightning-charge"></i> VIU Generator API
+        </a>
         <div class="ms-auto">
           <a href="dashboard.html" class="btn btn-info me-2"
             ><i class="bi bi-grid"></i> Dashboard</a
@@ -81,24 +193,62 @@
       </div>
     </nav>
 
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-7">
-          <div class="card mb-4 shadow">
-            <div class="card-body">
-              <h3 class="mb-4">
-                <i class="bi bi-person-circle text-primary"></i> Informasi Akun
-              </h3>
-              <table class="table table-striped align-middle">
-                <tbody id="userTable"></tbody>
-              </table>
+    <div class="main-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-lg-7">
+            <div class="card mb-4 shadow">
+              <div class="card-body">
+                <h3 class="mb-4 profile-title">
+                  <i class="bi bi-person-circle text-primary"></i> Informasi
+                  Akun
+                </h3>
+                <table class="table table-striped align-middle profile-table">
+                  <tbody id="userTable"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Floating WA Icon -->
+    <a
+      href="https://wa.me/6281234567890"
+      target="_blank"
+      id="wa-float-btn"
+      title="Chat via WhatsApp"
+    >
+      <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="mb-1">
+        &copy; <span id="tahun"></span> VIU Generator API &middot; All rights
+        reserved.
+      </div>
+      <div
+        class="d-flex flex-column align-items-center gap-1"
+        style="font-size: 1.07rem"
+      >
+        <span class="contact-link">
+          <i class="bi bi-envelope-at"></i>
+          <a href="mailto:support@domainanda.com">support@domainanda.com</a>
+        </span>
+        <span class="contact-link">
+          <i class="bi bi-whatsapp"></i>
+          <a href="https://wa.me/6281234567890" target="_blank"
+            >+62 812-3456-7890</a
+          >
+        </span>
+      </div>
+    </footer>
+
     <script>
+      document.getElementById("tahun").textContent = new Date().getFullYear();
+
       if (!localStorage.getItem("token")) location = "index.html";
       let user;
 
@@ -126,8 +276,8 @@
             <td>
               ${
                 user.apiKeyStatus === "active"
-                  ? '<span class="badge bg-success"><i class="bi bi-check-circle"></i> Aktif</span>'
-                  : '<span class="badge bg-secondary"><i class="bi bi-x-circle"></i> Tidak Aktif</span>'
+                  ? '<span class="badge bg-success status-badge"><i class="bi bi-check-circle"></i> Aktif</span>'
+                  : '<span class="badge bg-secondary status-badge"><i class="bi bi-x-circle"></i> Tidak Aktif</span>'
               }
             </td>
           </tr>
