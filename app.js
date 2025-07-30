@@ -227,7 +227,7 @@ app.post("/api/pay", userAuth, async (req, res) => {
   const merchantCode = process.env.TRIPAY_MERCHANT_CODE;
   const privateKey = process.env.TRIPAY_PRIVATE_KEY;
   const merchantRef = "ORDER" + Date.now() + user._id;
-  const amount = 30000;
+  const amount = 1000;
 
   const signatureBase = merchantCode + merchantRef + amount;
   const signature = crypto
@@ -247,13 +247,13 @@ app.post("/api/pay", userAuth, async (req, res) => {
       { sku: "API001", name: "API Access", price: amount, quantity: 1 },
     ],
     callback_url: process.env.TRIPAY_CALLBACK_URL,
-    return_url: `https://viu.lutify.biz.id/thankyou.html?ref=${merchantRef}`,
+    return_url: `https://viu.lutifygame.biz.id/thankyou.html?ref=${merchantRef}`,
     signature,
   };
 
   try {
     const tripayResp = await axios.post(
-      "https://tripay.co.id/api-sandbox/transaction/create",
+      "https://tripay.co.id/api/transaction/create",
       payload,
       { headers: { Authorization: `Bearer ${process.env.TRIPAY_API_KEY}` } }
     );
@@ -339,7 +339,7 @@ app.get("/api/invoice/detail/:merchant_ref", userAuth, async (req, res) => {
         .json({ status: "error", message: "Transaksi tidak ditemukan." });
 
     const tripayResp = await axios.get(
-      `https://tripay.co.id/api-sandbox/transaction/detail?reference=${user.reference}`,
+      `https://tripay.co.id/api/transaction/detail?reference=${user.reference}`,
       { headers: { Authorization: `Bearer ${process.env.TRIPAY_API_KEY}` } }
     );
     res.json({ status: "ok", data: tripayResp.data.data });
