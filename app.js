@@ -251,6 +251,7 @@ app.post("/api/pay", userAuth, async (req, res) => {
     ],
     callback_url: process.env.TRIPAY_CALLBACK_URL,
     return_url: `https://viu.lutifygame.biz.id/thankyou.html?ref=${merchantRef}`,
+    httpsAgent: ipv4Agent,
     signature,
   };
 
