@@ -251,7 +251,7 @@ app.post("/api/pay", userAuth, async (req, res) => {
   const merchantCode = process.env.TRIPAY_MERCHANT_CODE;
   const privateKey = process.env.TRIPAY_PRIVATE_KEY;
   const merchantRef = "ORDER" + Date.now() + user._id;
-  const amount = 1000;
+  const amount = 30000;
 
   const signatureBase = merchantCode + merchantRef + amount;
   const signature = crypto
