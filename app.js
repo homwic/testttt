@@ -10,8 +10,7 @@ const axios = require("axios");
 const { Resend } = require("resend");
 const User = require("./models/User");
 const apiKeyAuth = require("./middleware/apiKeyAuth");
-
-const axios = require("axios");
+const https = require("https");
 
 const ipv4Agent = new https.Agent({ family: 4 });// Sudah diperbaiki
 
