@@ -363,7 +363,7 @@
             <b>Endpoint utama:</b><br />
             <code
               >GET
-              /api/proxy?apikey=APIKEY&username=USERNAME&domain=DOMAIN&password=PASSWORD&paket=PAKET</code
+              /api/viu?apikey=APIKEY&username=USERNAME&domain=DOMAIN&password=PASSWORD&paket=PAKET</code
             >
           </p>
           <ul class="mb-3">
@@ -459,7 +459,7 @@ const USERNAME = 'ISI_USERNAME';
 const DOMAIN = 'gmail.com';
 const PASSWORD = 'ISI_PASSWORD';
 const PAKET = '1'; // atau '200'
-const url = `https://viu.lutify.biz.id/api/proxy?apikey=${APIKEY}&username=${USERNAME}&domain=${DOMAIN}&password=${PASSWORD}&paket=${PAKET}`;
+const url = `https://viu.lutifygame.biz.id/api/viu?apikey=${APIKEY}&username=${USERNAME}&domain=${DOMAIN}&password=${PASSWORD}&paket=${PAKET}`;
 axios.get(url, { headers: { 'Content-Type': 'application/json' } })
   .then(response => { console.log(response.data); })
   .catch(error => { console.error(error.response ? error.response.data : error.message); });
@@ -481,7 +481,7 @@ $username = "ISI_USERNAME";
 $domain = "gmail.com";
 $password = "ISI_PASSWORD";
 $paket = "1"; // atau '200'
-$url = "https://viu.lutify.biz.id/api/proxy?apikey=$apikey&amp;username=$username&amp;domain=$domain&amp;password=$password&amp;paket=$paket";
+$url = "https://viu.lutifygame.biz.id/api/viu?apikey=$apikey&amp;username=$username&amp;domain=$domain&amp;password=$password&amp;paket=$paket";
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -511,7 +511,7 @@ USERNAME = 'ISI_USERNAME'
 DOMAIN = 'gmail.com'
 PASSWORD = 'ISI_PASSWORD'
 PAKET = '1' # atau '200'
-url = f"https://viu.lutify.biz.id/api/proxy?apikey={APIKEY}&username={USERNAME}&domain={DOMAIN}&password={PASSWORD}&paket={PAKET}"
+url = f"https://viu.lutifygame.biz.id/api/viu?apikey={APIKEY}&username={USERNAME}&domain={DOMAIN}&password={PASSWORD}&paket={PAKET}"
 response = requests.get(url)
 print(response.text)
             </code></pre>
@@ -526,7 +526,7 @@ print(response.text)
                 <i class="bi bi-clipboard"></i>
               </button>
               <pre id="codeCurl"><code>
-curl -X GET "https://viu.lutify.biz.id/api/proxy?apikey=ISI_APIKEY_ANDA&username=ISI_USERNAME&domain=gmail.com&password=ISI_PASSWORD&paket=1"
+curl -X GET "https://viu.lutifygame.biz.id/api/viu?apikey=ISI_APIKEY_ANDA&username=ISI_USERNAME&domain=gmail.com&password=ISI_PASSWORD&paket=1"
             </code></pre>
             </div>
           </div>

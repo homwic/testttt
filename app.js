@@ -406,7 +406,7 @@ app.post("/api/whitelist/delete", userAuth, async (req, res) => {
 });
 
 /* PROXY UTAMA (pakai apiKeyAuth middleware) */
-app.get("/api/proxy", apiKeyAuth, async (req, res) => {
+app.get("/api/viu", apiKeyAuth, async (req, res) => {
   const username = req.query.username || "";
   const domain = req.query.domain || "";
   const password = req.query.password || "";
