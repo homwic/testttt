@@ -249,7 +249,7 @@
     <script>
       document.getElementById("tahun").textContent = new Date().getFullYear();
 
-      if (!localStorage.getItem("token")) location = "index.html";
+      if (!localStorage.getItem("token")) location = "/index";
       let user;
 
       async function loadUser() {
@@ -305,7 +305,7 @@
 
       function logout() {
         localStorage.removeItem("token");
-        window.location = "index.html";
+        window.location = "/index";
       }
 
       loadUser();
