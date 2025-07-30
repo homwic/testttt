@@ -174,7 +174,7 @@
           alert.classList.add("alert-success");
           alert.innerText = "Login berhasil, mengarahkan ke dashboard...";
           localStorage.setItem("token", data.token);
-          setTimeout(() => (window.location = "dashboard.html"), 800);
+          setTimeout(() => (window.location = "/dashboard"), 800);
         } else {
           alert.classList.remove("d-none", "alert-success");
           alert.classList.add("alert-danger");
