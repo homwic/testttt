@@ -9,7 +9,11 @@ const fetch = require("node-fetch");
 const axios = require("axios");
 const { Resend } = require("resend");
 const User = require("./models/User");
-const apiKeyAuth = require("./middleware/apiKeyAuth"); // Sudah diperbaiki
+const apiKeyAuth = require("./middleware/apiKeyAuth");
+
+const axios = require("axios");
+
+const ipv4Agent = new https.Agent({ family: 4 });// Sudah diperbaiki
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -255,7 +259,8 @@ app.post("/api/pay", userAuth, async (req, res) => {
     const tripayResp = await axios.post(
       "https://tripay.co.id/api/transaction/create",
       payload,
-      { headers: { Authorization: `Bearer ${process.env.TRIPAY_API_KEY}` } }
+      { headers: { Authorization: `Bearer ${process.env.TRIPAY_API_KEY}` },
+    httpsAgent: ipv4Agent, }
     );
     const invoiceData = tripayResp.data.data;
     if (!invoiceData || !invoiceData.checkout_url) {
