@@ -749,7 +749,7 @@ curl -X GET "https://viu.lutifygame.biz.id/api/viu?apikey=ISI_APIKEY_ANDA&userna
         });
       }
 
-      if (!localStorage.getItem("token")) location = "index.html";
+      if (!localStorage.getItem("token")) location = "/index";
       let user;
 
       async function loadUser() {
