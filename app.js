@@ -18,6 +18,16 @@ const ipv4Agent = new https.Agent({ family: 4 });// Sudah diperbaiki
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 
+
+
+
+
+const app = express();
+app.set("trust proxy", true);
+app.use(cors());
+app.use(express.json());
+app.use(express.static("public"));
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
@@ -37,14 +47,6 @@ app.get("/profile", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "profile.html"));
 });
 
-
-
-
-const app = express();
-app.set("trust proxy", true);
-app.use(cors());
-app.use(express.json());
-app.use(express.static("public"));
 
 // --- Helper: Modern HTML Email Template for OTP ---
 function getOtpEmailHtml(otp) {
