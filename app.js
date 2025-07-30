@@ -16,6 +16,29 @@ const ipv4Agent = new https.Agent({ family: 4 });// Sudah diperbaiki
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+app.get("/thankyou", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "thankyou.html"));
+});
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "dashboard.html"));
+});
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "register.html"));
+});
+app.get("/profile", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "profile.html"));
+});
+
+
+
+
 const app = express();
 app.set("trust proxy", true);
 app.use(cors());
