@@ -345,7 +345,8 @@ app.get("/api/invoice/detail/:merchant_ref", userAuth, async (req, res) => {
 
     const tripayResp = await axios.get(
       `https://tripay.co.id/api/transaction/detail?reference=${user.reference}`,
-      { headers: { Authorization: `Bearer ${process.env.TRIPAY_API_KEY}` } }
+      { headers: { Authorization: `Bearer ${process.env.TRIPAY_API_KEY}` },
+    httpsAgent: ipv4Agent, }
     );
     res.json({ status: "ok", data: tripayResp.data.data });
   } catch (e) {
